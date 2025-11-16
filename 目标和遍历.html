@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Target Sum Calculator</title>
+</head>
+<body>
+    <h2>目标和计算器</h2>
+    <label for="numbers">输入数组，“，”分割:</label>
+    <input type="text" id="numbers">
+    <br>
+    <label for="target">目标和:</label>
+    <input type="number" id="target">
+    <br>
+    <button onclick="calculateSum()">遍历</button>
+    <br>
+    <div id="result"></div>
+
+    <script>
+        function calculateSum() {
+            var numbersInput = document.getElementById('numbers').value;
+            var target = parseInt(document.getElementById('target').value);
+            var numbers = numbersInput.split(',').map(Number);
+            
+            var results = [];
+            
+            function findCombinations(currentIndex, currentSum, expression) {
+                if (currentIndex === numbers.length) {
+                    if (currentSum === target) {
+                        results.push(expression + " = " + target);
+                    }
+                    return;
+                }
+                
+                findCombinations(currentIndex + 1, currentSum + numbers[currentIndex], expression === "" ? numbers[currentIndex].toString() : expression + " + " + numbers[currentIndex]);
+                findCombinations(currentIndex + 1, currentSum, expression);
+            }
+            
+            findCombinations(0, 0, "");
+            
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = "";
+            
+            if (results.length === 0) {
+                resultDiv.innerHTML = "No combinations found.";
+            } else {
+                for (var i = 0; i < results.length; i++) {
+                    var p = document.createElement('p');
+                    p.textContent = (i + 1) + ". " + results[i];
+                    resultDiv.appendChild(p);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
